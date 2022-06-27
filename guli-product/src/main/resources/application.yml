@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.56.12:3306/guli_pms
+
+#配置xml文件路径  和   主键自增
+mybatis-plus:   #这基本是个默认值,classpath*:包括引入的依赖的类路径也进行扫描
+  mapper-locations: classpath:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1 #逻辑已删除;默认为1
+      logic-not-delete-value: 0   #逻辑未删除：默认未0
+server:
+  port: 7000
+logging:
+  level:
+      com.yuan.guli: debug  #打印debug日志

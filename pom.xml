@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.2.RELEASE</version>
+        <version>2.1.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.yuan.guli</groupId>
@@ -20,5 +20,13 @@
         <module>guli-order</module>
         <module>guli-member</module>
         <module>guli-ware</module>
+        <module>renren-fast</module>
+        <module>renren-generator</module>
+        <module>guli-common</module>
+        <module>guli-gateway</module>
+        <module>guli-module</module>
+        <module>guli-search</module>
+        <module>guli-authServer</module>
+        <module>guli-cart</module>
     </modules>
 </project>

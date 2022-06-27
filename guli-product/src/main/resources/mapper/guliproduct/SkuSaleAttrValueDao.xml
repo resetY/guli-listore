@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuan.guli.guliproduct.dao.SkuSaleAttrValueDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.yuan.guli.guliproduct.entity.SkuSaleAttrValueEntity" id="skuSaleAttrValueMap">
+        <result property="id" column="id"/>
+        <result property="skuId" column="sku_id"/>
+        <result property="attrId" column="attr_id"/>
+        <result property="attrName" column="attr_name"/>
+        <result property="attrValue" column="attr_value"/>
+        <result property="attrSort" column="attr_sort"/>
+    </resultMap>
+<!--    <resultMap type="com.yuan.guli.guliproduct.vo.SkuItemVo$SkuItemSaleAttrVo" id="getSaleAttrsBySpuid">-->
+<!--            <result property="attrId" column="attr_id"></result>-->
+<!--            <result property="attrName" column="attr_name"></result>-->
+<!--            <result property="attrValue" column="attrValue"></result>-->
+<!--    </resultMap>-->
+
+
+<!--    <select id="getSaleAttrsBySpuid" resultType="com.yuan.guli.guliproduct.vo.SkuItemVo$SkuItemSaleAttrVo"-->
+<!--    resultMap="getSaleAttrsBySpuid"-->
+<!--    >-->
+<!--    SELECT-->
+<!--    pssv.attr_id,-->
+<!--    pssv.attr_name,-->
+<!--    GROUP_CONCAT(DISTINCT pssv.attr_value) AS attrValue-->
+<!--    FROM `pms_sku_info` AS psi-->
+<!--    JOIN `pms_sku_sale_attr_value` AS pssv-->
+<!--    ON psi.sku_id = pssv.sku_id-->
+<!--    WHERE psi.spu_id = #{spuId}-->
+<!--    GROUP BY pssv.attr_id,pssv.attr_name-->
+<!--    </select>-->
+    <resultMap id="getSaleAttrsBySpuids" type="com.yuan.guli.guliproduct.vo.SkuItemVo$SkuItemSaleAttrVo">
+        <result column="attr_id" property="attrId"></result>
+        <result column="attr_name" property="attrName"></result>
+        <collection property="attrValues" ofType="com.yuan.guli.guliproduct.vo.SkuItemVo$AttrValueWithSkuid">
+       <result column="sku_id" property="skuId"></result>
+            <result property="attrValue" column="attr_value"></result>
+            <result column="sku_id" property="skuId"></result>
+        </collection>
+    </resultMap>
+        <select id="getSaleAttrsBySpuid" resultMap="getSaleAttrsBySpuids">
+        select
+        pssv.attr_id,
+        pssv.attr_name,
+          pssv.attr_value,
+          GROUP_CONCAT( DISTINCT psi.sku_id) as sku_id
+        from `pms_sku_info` as psi
+        join `pms_sku_sale_attr_value` as pssv
+        on psi.sku_id = pssv.sku_id
+        where psi.spu_id = #{spuId}
+        group by pssv.attr_id,pssv.attr_name, pssv.attr_value
+        </select>
+
+    <!--
+    查询聚合的sku信息
+    -->
+    <select id="getSkuAttrValue" resultType="java.lang.String">
+        SELECT CONCAT(attr_name,":",attr_value)
+        FROM `pms_sku_sale_attr_value`
+        WHERE sku_id = #{skuId}
+    </select>
+
+</mapper>
